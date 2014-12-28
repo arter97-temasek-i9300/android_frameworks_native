@@ -57,6 +57,10 @@
 #include "DisplayHardware/HWComposer.h"
 #include "Effects/Daltonizer.h"
 
+#ifdef SAMSUNG_HDMI_SUPPORT
+#include "SecHdmiClient.h"
+#endif
+
 namespace android {
 
 // ---------------------------------------------------------------------------
@@ -135,6 +139,10 @@ public:
     RenderEngine& getRenderEngine() const {
         return *mRenderEngine;
     }
+
+#ifdef SWAP_BUFFERS_WORKAROUND
+    int getNumVisibleRegions();
+#endif
 #ifdef QCOM_BSP
     // Extended Mode - No video on primary and it will be shown full
     // screen on External
@@ -547,6 +555,10 @@ private:
 #ifdef QCOM_BSP
     // Flag to disable external rotation animation feature.
     bool mDisableExtAnimation;
+#endif
+
+#if defined(SAMSUNG_HDMI_SUPPORT) && defined(SAMSUNG_EXYNOS5250)
+    SecHdmiClient *                         mHdmiClient;
 #endif
 };
 

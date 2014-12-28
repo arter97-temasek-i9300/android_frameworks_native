@@ -51,6 +51,10 @@ ifeq ($(TARGET_BOARD_PLATFORM),apq8084)
 	LOCAL_CFLAGS += -DAPQ8084
 endif
 
+ifeq ($(TARGET_BOARD_PLATFORM),exynos4)
+	LOCAL_CFLAGS += -DSWAP_BUFFERS_WORKAROUND
+endif
+
 ifeq ($(TARGET_DISABLE_TRIPLE_BUFFERING),true)
 	LOCAL_CFLAGS += -DTARGET_DISABLE_TRIPLE_BUFFERING
 endif
@@ -103,6 +107,13 @@ LOCAL_SHARED_LIBRARIES := \
 	libui \
 	libgui \
 	libpowermanager
+
+ifeq ($(BOARD_USES_SAMSUNG_HDMI),true)
+        LOCAL_CFLAGS += -DSAMSUNG_HDMI_SUPPORT
+        LOCAL_SHARED_LIBRARIES += libTVOut libhdmiclient
+        LOCAL_C_INCLUDES += hardware/samsung/$(TARGET_BOARD_PLATFORM)/hal/libhdmi/libhdmiservice
+        LOCAL_C_INCLUDES += hardware/samsung/$(TARGET_BOARD_PLATFORM)/hal/include
+endif
 
 ifeq ($(TARGET_USES_QCOM_BSP), true)
     LOCAL_C_INCLUDES += $(call project-path-for,qcom-display)/libgralloc
